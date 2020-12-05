@@ -10,13 +10,10 @@ except:
         x = input("Plexapi is not installed do you want to install it? y/n:")
         if x == 'y':
             subprocess.check_call([sys.executable, "-m", "pip", "install", 'PlexAPI==4.2.0'])
-        elif x == 'n':
-            sys.exit()
-    finally:
-        if x == 'y':
             from plexapi.server import PlexServer
         elif x == 'n':
             sys.exit()
+
 import requests
 import subprocess
 from urllib.parse import quote_plus, urlencode
