@@ -33,11 +33,11 @@ import sys
 import pathlib
 from configparser import *
 
-print('#########################')
-print('#                       #')
-print('# Plex Monthly Preroll! #')
-print('#                       #')
-print('#########################' + '\n')
+print('###########################')
+print('#                         #')
+print('#  Plex Monthly Preroll!  #')
+print('#                         #')
+print('###########################' + '\n')
 
 print('Pre-roll updating...')
 file = pathlib.Path("config.ini")
