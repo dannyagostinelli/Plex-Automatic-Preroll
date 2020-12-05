@@ -3,6 +3,7 @@ Automated script to change out plex preroll every month
 
 ## Requirements
 -[Python 3.7+](https://www.python.org/)
+(Probably works on a lower version haven't tested)
 
 -[PlexAPI](https://github.com/pkkid/python-plexapi)
 
