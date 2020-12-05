@@ -14,6 +14,13 @@ Nothing! well obviously python and maybe the plex api if you don't already have 
 ## Settings
 The config.ini file is created through the script for ease of use. If you need to update it than you can edit the config.ini file. I might add in a scrpt editor in the program later.
 
+**If you want multiple random pre-roll videos to play in a specific month all you need to do is seperate the paths with a semi-colon**
+Example when it ask you to add the December trailer path and you want to play two videos randomly for that month type:
+
+```
+/path/to/file1.mp4;/path/to/file2.mp4
+```
+
 ## Usage
 
 ### Setting Plex Preroll
