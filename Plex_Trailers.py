@@ -4,15 +4,12 @@ try:
 
 except:
     print('\033[91mERROR:\033[0m PlexAPI is not installed.')
-    try:
+    x = input("Do you want to install it? y/n:")
+    if x == 'y':
+        subprocess.check_call([sys.executable, "-m", "pip", "install", 'PlexAPI==4.2.0'])
         from plexapi.server import PlexServer
-    except:
-        x = input("Plexapi is not installed do you want to install it? y/n:")
-        if x == 'y':
-            subprocess.check_call([sys.executable, "-m", "pip", "install", 'PlexAPI==4.2.0'])
-            from plexapi.server import PlexServer
-        elif x == 'n':
-            sys.exit()
+    elif x == 'n':
+        sys.exit()
 
 import requests
 import subprocess
@@ -117,30 +114,8 @@ def main():
         token = str(config['plex_token'])
         plex = PlexServer(url, token, session, timeout=None)
         currentMonth = int(datetime.today().month)
-        if currentMonth == 1:
-            plex.settings.get('cinemaTrailersPrerollID').set(config['Jan'])
-        elif currentMonth == 2:
-            plex.settings.get('cinemaTrailersPrerollID').set(config['Feb'])
-        if currentMonth == 3:
-            plex.settings.get('cinemaTrailersPrerollID').set(config['Mar'])
-        elif currentMonth == 4:
-            plex.settings.get('cinemaTrailersPrerollID').set(config['Apr'])
-        if currentMonth == 5:
-            plex.settings.get('cinemaTrailersPrerollID').set(config['May'])
-        elif currentMonth == 6:
-            plex.settings.get('cinemaTrailersPrerollID').set(config['June'])
-        if currentMonth == 7:
-            plex.settings.get('cinemaTrailersPrerollID').set(config['July'])
-        elif currentMonth == 8:
-            plex.settings.get('cinemaTrailersPrerollID').set(config['Aug'])
-        if currentMonth == 9:
-            plex.settings.get('cinemaTrailersPrerollID').set(config['Sep'])
-        elif currentMonth == 10:
-            plex.settings.get('cinemaTrailersPrerollID').set(config['Oct'])
-        if currentMonth == 11:
-            plex.settings.get('cinemaTrailersPrerollID').set(config['Nov'])
-        elif currentMonth == 12:
-            plex.settings.get('cinemaTrailersPrerollID').set(config['Dec'])
+        month = [config['Jan'],config['Feb'],config['Mar'],config['Apr'],config['May'],config['June'],config['July'],config['Aug'],config['Sep'],config['Oct'],config['Nov'],config['Dec']]
+        plex.settings.get('cinemaTrailersPrerollID').set(month[currentMonth - 1])
         plex.settings.save()
         print('Pre-roll updated')
 
