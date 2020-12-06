@@ -1,4 +1,6 @@
 #!/usr/bin/python
+import subprocess
+import sys
 try:
     from plexapi.server import PlexServer
 
@@ -12,7 +14,6 @@ except:
         sys.exit()
 
 import requests
-import subprocess
 from urllib.parse import quote_plus, urlencode
 from datetime import datetime
 
@@ -23,7 +24,6 @@ from plexapi.exceptions import BadRequest, NotFound
 from argparse import ArgumentParser
 import os
 import random
-import sys
 import pathlib
 from configparser import *
 
