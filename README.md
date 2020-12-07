@@ -1,4 +1,4 @@
-# Plex-Monthly-Preroll
+# Plex-Automatic-Preroll
 Automated script to change out plex preroll every month
 
 ## Requirements
