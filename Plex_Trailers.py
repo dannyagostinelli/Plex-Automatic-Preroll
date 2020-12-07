@@ -205,12 +205,11 @@ else:
         file1.write("  StaticTrailer: " + x)
         x = input("Enter the number of trailers to use ex: Path contains 5 trailers you set this value to 2 the "
                   "program will pick two at random as well as the static trailer to play in order:")
-        file1.write("  StaticTrailer: " + x)
+        file1.write("  TrailerListLength: " + x)
         file1.write("  UseMisc: Yes")
     else:
         file1.write("  Path: ")
         file1.write("  StaticTrailer: ")
-        file1.write("  Random: ")
         file1.write("  TrailerListLength: ")
         file1.write("  UseMisc: No")
     print('config file (config.yml) created')
