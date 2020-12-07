@@ -17,13 +17,17 @@ Nothing! well obviously python and maybe the plex api if you don't already have 
 ## Settings
 The config.yml file is created through the script for ease of use. If you need to update it than you can edit the config.yml file.
 
-**If you want multiple random pre-roll videos to play in a specific month, week, or day all you need to do is seperate the paths with a semi-colon for the master list you need to specify random or not if allowing the script to make it automaticlly**
+**If you want multiple random pre-roll videos to play in a specific month, week, or day all you need to do is seperate the paths with a semi-colon for the master list you need to specify random or not if allowing the script to make it automatically**
 Example when it ask you to add the December trailer path and you want to play two videos randomly for that month type:
 
 ```
 /path/to/file1.mp4;/path/to/file2.mp4
 ```
 **Example config will be provided**
+
+**The order of which it chooses the trailer list goes Master, Misc, Daily, Weekly, and then Monthly**
+
+For example you could have your monthly list set up to play a set of pre-rolls every month. While also set it using the Daily section to play a specific pre-roll on Dec 25th and then even have it so for 2 weeks during Dec it rotates through a set of pre-rolls defined in the Weekly pre-roll section.
 
 ## Usage
 
