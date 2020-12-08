@@ -23,7 +23,7 @@ That will install all the needed packages
 https://smarthomepursuits.com/configure-plex-automatic-prerolls-on-windows/
 
 ## Settings
-The config.ini file is created through the script for ease of use. Optionaly you can just create it by hand. If you need to update it than you can edit the config.ini file.
+The config.ini file is created through the script for ease of use. Optionaly you can just create it by hand by filling in the exampleconfig.ini file and then renaming it to config.ini. If you need to update it than you can edit the config.ini file.
 
 Below is an example of the config file:
 
