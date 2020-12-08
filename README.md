@@ -12,10 +12,68 @@ This new branch contains an almost fully rewritten code base. This now allows fo
 
 
 ## Installation
-Nothing! well obviously python and maybe the plex api if you don't already have it but the script should prompt you to install that if it is missing.
+First make sure you have Python installed version 3.7 and above. Next run:
+
+
+```
+pip install -r requirements.txt
+```
+That will install all the needed packages 
+
+## Step by step instructions by Danny at smarthomepursuits.com
+
+https://smarthomepursuits.com/configure-plex-automatic-prerolls-on-windows/
 
 ## Settings
-The config.yml file is created through the script for ease of use. If you need to update it than you can edit the config.yml file.
+The config.yml file is created through the script for ease of use. Optionaly you can just create it by hand. If you need to update it than you can edit the config.yml file.
+
+Below is an example of the config file:
+```
+Plex: 
+  url: https://url:32400
+  token: 
+MasterList: 
+  UseMaster: No
+  MasterRandom: No
+  # If the path for the Master List is left blank the script will create the path 
+  # based on if Monthly, Weekly, or Daily are set to be used in the Master List 
+  # otherwise you can populate the path with your own set of trailers
+  Path: 
+Monthly: 
+  Jan: /path/to/file.mp4
+  Feb: 
+  Mar: 
+  Apr: 
+  May: 
+  June: 
+  July: 
+  Aug: 
+  Sept: 
+  Oct: 
+  Nov: 
+  Dec: 
+  MasterList: No
+  MasterListValue: 
+  UseMonthly: Yes
+Weekly:
+  StartDate: 
+  EndDate: 
+  Path: 
+  MasterList: No
+  UseWeekly: No
+Daily:
+  StartDate: 
+  EndDate: 
+  Path: 
+  MasterList: No
+  UseDaily: No
+Misc:
+  Path: 
+  StaticTrailer: /trailer/to/play/at/end.mp4
+  #Enter the number of trailers to use ex: Path contains 5 trailers you set this value to 2 the program will pick two at random as well as the static trailer to play in order:
+  TrailerListLength: 
+  UseMisc: No
+```
 
 **If you want multiple random pre-roll videos to play in a specific month, week, or day all you need to do is seperate the paths with a semi-colon for the master list you need to specify random or not if allowing the script to make it automatically**
 Example when it ask you to add the December trailer path and you want to play two videos randomly for that month type:
