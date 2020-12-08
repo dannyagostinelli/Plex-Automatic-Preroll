@@ -25,7 +25,7 @@ That will install all the needed packages
 https://smarthomepursuits.com/configure-plex-automatic-prerolls-on-windows/
 
 ## Settings
-The config.yml file is created through the script for ease of use. Optionaly you can just create it by hand. If you need to update it than you can edit the config.yml file.
+The config.yml file is created through the script for ease of use. Optionaly you can just create it by hand by filling in the exampleconfig.yml file and then renaming it to config.yml. If you need to update it than you can edit the config.yml file.
 
 Below is an example of the config file:
 ```
@@ -109,7 +109,7 @@ Search for task schedular and open it. Click "Create Basic Task" and enter a nam
 
 ## Running For The First Time
 
-Since you just downloaded the script the first time you run it you will be prompted to fill in some information to create the config file.
+Since you just downloaded the script the first time you run it you will be prompted to fill in some information to create the config file unless you fill out the exampleconfig.yml file and then rename it to config.yml.
 
 ```
 python /path/to/scripts/Plex_Trailers.py
