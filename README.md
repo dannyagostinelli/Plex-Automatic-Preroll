@@ -8,11 +8,57 @@ Automated script to change out plex preroll every month
 -[PlexAPI](https://github.com/pkkid/python-plexapi)
 
 
+
 ## Installation
-Nothing! well obviously python and maybe the plex api if you don't already have it but the script should prompt you to install that if it is missing.
+First make sure you have Python installed version 3.7 and above. Next run:
+
+
+```
+pip install -r requirements.txt
+```
+That will install all the needed packages 
+
+## Step by step instructions by Danny at smarthomepursuits.com
+
+https://smarthomepursuits.com/configure-plex-automatic-prerolls-on-windows/
 
 ## Settings
-The config.ini file is created through the script for ease of use. If you need to update it than you can edit the config.ini file. I might add in a scrpt editor in the program later.
+The config.ini file is created through the script for ease of use. Optionaly you can just create it by hand. If you need to update it than you can edit the config.ini file.
+
+Below is an example of the config file:
+
+```
+[DEFAULT]
+
+plex_url = https://your ip or localhost here must be https:32400
+
+plex_token =  
+
+jan = /path/to/file.mp4
+
+feb = 
+
+mar = 
+
+apr = 
+
+may = 
+
+june =
+
+july =
+
+aug = 
+
+sept = 
+
+oct = 
+
+nov = 
+
+dec = 
+```
+
 
 **If you want multiple random pre-roll videos to play in a specific month all you need to do is seperate the paths with a semi-colon**
 Example when it ask you to add the December trailer path and you want to play two videos randomly for that month type:
@@ -42,7 +88,7 @@ Search for task schedular and open it. Click "Create Basic Task" and enter a nam
 
 ## Running For The First Time
 
-Since you just downloaded the script the first time you run it you will be prompted to fill in some information to create the config file.
+Since you just downloaded the script the first time you run if you don't already have a config file you will be prompted to fill in some information to create the config file.
 
 ```
 python /path/to/scripts/Plex_Trailers.py
