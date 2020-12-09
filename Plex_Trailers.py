@@ -17,7 +17,7 @@ import re
 import requests
 import yaml
 from urllib.parse import quote_plus, urlencode
-from datetime import datetime
+import datetime
 
 from plexapi import media, utils, settings, library
 from plexapi.base import Playable, PlexPartialObject
@@ -225,7 +225,7 @@ def getArguments():
 
 def main():
     sort = ','
-    x = datetime.today()
+    x = datetime.date.today()
     res = "null"
     #Open config
     with open('config.yml', 'r') as file:
