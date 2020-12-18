@@ -245,35 +245,40 @@ def main():
 
     # Arguments
     arguments = getArguments()
-
+    #Thanks to https://github.com/agrider for the reordering and error handling for pre-roll paths
     if doc["Plex"]["url"] is not None:
         session = requests.Session()
         session.verify = False
         requests.packages.urllib3.disable_warnings()
         plex = PlexServer(doc["Plex"]["url"], doc["Plex"]["token"], session, timeout=None)
-        if str(doc["MasterList"]["UseMaster"]).lower() == 'true':
-            plex.settings.get('cinemaTrailersPrerollID').set(MasterlistToStr)
-        else:
-            if str(doc["Monthly"]["UseMonthly"]).lower() == 'true':
-                plex.settings.get('cinemaTrailersPrerollID').set(doc["Monthly"][x.strftime("%b")])
-            if str(doc["Weekly"]["UseWeekly"]).lower() == 'true':
-                if doc["Weekly"]["StartDate"] <= x <= doc["Weekly"]["EndDate"]:
-                    plex.settings.get('cinemaTrailersPrerollID').set(doc["Weekly"]["Path"])
-            if str(doc["Daily"]["UseDaily"]).lower() == 'true':
-                if doc["Daily"]["StartDate"] <= x <= doc["Daily"]["EndDate"]:
-                    plex.settings.get('cinemaTrailersPrerollID').set(doc["Daily"]["Path"])
-            if str(doc["Misc"]["UseMisc"]).lower() == 'true':
-                if str(doc["Misc"]["Random"]).lower() == 'true':
-                    sort = ';'
-                else:
-                    sort = ','
-                res = re.split(',|;', doc["Misc"]["Path"])
-                i = 1
-                while i < int(doc["Misc"]["TrailerLength"]):
-                    trailer = trailer + sort + res[random.randint(0, len(res) - 1)]
-                    i += 1
-                trailer = trailer + sort + doc["Misc"]["StaticTrailer"]
-                plex.settings.get('cinemaTrailersPrerollID').set(trailer)
+        prerolls = None
+        if str(doc["Monthly"]["UseMonthly"]).lower() == 'true':
+            prerolls = doc["Monthly"][x.strftime("%b")]
+        if str(doc["Weekly"]["UseWeekly"]).lower() == 'true':
+            if doc["Weekly"]["StartDate"] <= x <= doc["Weekly"]["EndDate"]:
+                prerolls = doc["Weekly"]["Path"]
+        if str(doc["Daily"]["UseDaily"]).lower() == 'true':
+            if doc["Daily"]["StartDate"] <= x <= doc["Daily"]["EndDate"]:
+               prerolls = doc["Daily"]["Path"]
+        if str(doc["Misc"]["UseMisc"]).lower() == 'true':
+            if str(doc["Misc"]["Random"]).lower() == 'true':
+                sort = ';'
+            else:
+                sort = ','
+            res = re.split(',|;', doc["Misc"]["Path"])
+            i = 1
+            while i < int(doc["Misc"]["TrailerLength"]):
+                trailer = trailer + sort + res[random.randint(0, len(res) - 1)]
+                i += 1
+            trailer = trailer + sort + doc["Misc"]["StaticTrailer"]
+            prerolls = trailer
+        if prerolls is None:
+            if str(doc["MasterList"]["UseMaster"]).lower() == 'true':
+                prerolls = MasterlistToStr
+            else:
+                print("Error: No video paths configured after applying videos matching today's date and master if enabled!")
+                raise Exception("No video paths configured after applying videos matching today's date and master if enabled!")
+        plex.settings.get('cinemaTrailersPrerollID').set(prerolls)    
         plex.settings.save()
         print('Pre-roll updated')
 
