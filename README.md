@@ -4,6 +4,8 @@ This branch should be stable but you have been warned!
 
 This new branch contains an almost fully rewritten code base. This now allows for Pre-rolls by Month, Week, Day, Misc, and Master list. The config is now based on yaml instead of a ini file for easier reading and data config data storage.
 
+Thanks to [@agrider]( https://github.com/agrider ) for masterlist re-ordering and empty path error handling
+
 ## Requirements
 -[Python 3.7+](https://www.python.org/)
 (Probably works on a lower version haven't tested)
@@ -37,7 +39,7 @@ MasterList:
   MasterRandom: No
   # If the path for the Master List is left blank the script will create the path 
   # based on if Monthly, Weekly, or Daily are set to be used in the Master List 
-  # otherwise you can populate the path with your own set of trailers
+  # otherwise you can populate the path with your own set of trailers and if month, week, day or misc is left blank it will call the master list
   Path: 
 Monthly: 
   Jan: /path/to/file.mp4
@@ -83,9 +85,9 @@ Example when it ask you to add the December trailer path and you want to play tw
 ```
 **Example config will be provided**
 
-**The order of which it chooses the trailer list goes Master, Misc, Daily, Weekly, and then Monthly**
+**The order of which it chooses the trailer list goes Misc, Daily, Weekly, Monthly, and then Master **
 
-For example you could have your monthly list set up to play a set of pre-rolls every month. While also set it using the Daily section to play a specific pre-roll on Dec 25th and then even have it so for 2 weeks during Dec it rotates through a set of pre-rolls defined in the Weekly pre-roll section.
+For example you could have your monthly list set up to play a specific set of pre-rolls for 3 months of the year leave the rest blank and those empty months will use the masterlist. While also set it using the Daily section to play a specific pre-roll on Dec 25th and then even have it so for 2 weeks during Dec it rotates through a set of pre-rolls defined in the Weekly pre-roll section.
 
 ## Usage
 
