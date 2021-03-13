@@ -40,11 +40,12 @@ if file.exists():
 else:
     print('No config file found! Lets set one up!')
     file1 = open("config.ini","w+")
-    file1.write("[DEFAULT]" + "\n")
+    file1.write("[SERVER]" + "\n")
     x = input("Enter your (https) plex url:")
     file1.write("plex_url = " + x + "\n")
     x = input("Enter your plex token: (not sure what that is go here: https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/)")
-    file1.write("plex_token = " + x + "\n")
+    file1.write("plex_token = " + x + "\n\n")
+    file1.write("[MONTHS]" + "\n")
     print('Make sure plex can access the path you enter!')
     x = input("Enter the January trailer path:")
     file1.write("Jan = " + x + "\n")
@@ -69,14 +70,19 @@ else:
     x = input("Enter the November trailer path:")
     file1.write("Nov = " + x + "\n")
     x = input("Enter the December trailer path:")
-    file1.write("Dec = " + x + "\n")
+    file1.write("Dec = " + x + "\n\n")
+    file1.write("[PATHS]" + "\n")
+    x = input("Enter the Host directory path: (Path where your PreRoll folders are located)")
+    file1.write("host_dir = " + x + "\n")
+    x = input("OPTIONAL: Enter the Docker directory path: (Path where your PreRoll folders are located when using docker. (Path that Plex uses))")
+    file1.write("docker_dir = " + x + "\n")
     print('config file (config.ini) created')
     file1.close()
     file1 = open("config.ini","r")
 
 def getArguments():
     name = 'Monthly-Plex-Preroll-Trailers'
-    version = '1.0.0'
+    version = '1.0.1'
     parser = ArgumentParser(description='{}: Set monthly trailers for Plex'.format(name))
     parser.add_argument("-v", "--version", action='version', version='{} {}'.format(name, version), help="show the version number and exit")
     args = parser.parse_args()
@@ -84,22 +90,58 @@ def getArguments():
 def getConfig():
     config = ConfigParser()
     config.read(os.path.split(os.path.abspath(__file__))[0]+'/config.ini')
-    return {
-        'plex_url': config.get('DEFAULT', 'plex_url'),
-        'plex_token': config.get('DEFAULT', 'plex_token'),
-        'Jan': config.get('DEFAULT', 'Jan'),
-        'Feb': config.get('DEFAULT', 'Feb'),
-        'Mar': config.get('DEFAULT', 'Mar'),
-        'Apr': config.get('DEFAULT', 'Apr'),
-        'May': config.get('DEFAULT', 'May'),
-        'June': config.get('DEFAULT', 'June'),
-        'July': config.get('DEFAULT', 'July'),
-        'Aug': config.get('DEFAULT', 'Aug'),
-        'Sep': config.get('DEFAULT', 'Sept'),
-        'Oct': config.get('DEFAULT', 'Oct'),
-        'Nov': config.get('DEFAULT', 'Nov'),
-        'Dec': config.get('DEFAULT', 'Dec')
-    }
+    configdict = {}
+
+    if 'SERVER' in config:
+        if 'plex_url' in config['SERVER']:
+            configdict['plex_url'] = config.get('SERVER', 'plex_url')
+        else:
+            print('Plex URL not found. Please update your config.')
+            raise SystemExit
+        if 'plex_token' in config['SERVER']:
+            configdict['plex_token'] = config.get('SERVER', 'plex_token')
+        else:
+            print('Plex token not found. Please update your config.')
+            raise SystemExit     
+    else:
+        print('Invalid config. SERVER not found. Please update your config.')
+        raise SystemExit
+
+
+    if 'PATHS' in config:
+        if 'host_dir' in config['PATHS']:
+            host_dir = os.path.join(config.get('PATHS', 'host_dir'),'')
+            if 'docker_dir' in config['PATHS'] and config.get('PATHS', 'docker_dir'):
+                docker_dir = os.path.join(config.get('PATHS', 'docker_dir'),'')
+            else:
+                docker_dir = host_dir
+        else:
+            print('host_dir not found in config. Please update your config.')
+            raise SystemExit
+    else:
+        print('Invalid config. PATHS not found. Please update your config.')
+        raise SystemExit
+    
+    for month in config['MONTHS']:
+        path = config['MONTHS'][month].replace(docker_dir,host_dir)
+        path = generatePreRoll(path).replace(host_dir,docker_dir)
+        configdict[month] = path
+    return configdict
+    
+
+#Automatically generate preroll based on a list of files in a folder
+def generatePreRoll(PreRollPath):
+    types = ['.mp4', '.avi', '.mkv']
+    PreRollFiles = ''
+    if any(type in PreRollPath for type in types):
+        return PreRollPath
+    else:
+        PreRollPath = os.path.join(PreRollPath,'')
+        for type in types:
+            for file in os.listdir(PreRollPath):
+                if file.endswith(type):
+                    PreRollFiles+=os.path.join(PreRollPath, file)+';'
+        return PreRollFiles
 
 def main():
     # Arguments
@@ -113,11 +155,14 @@ def main():
         url = str(config['plex_url'])
         token = str(config['plex_token'])
         plex = PlexServer(url, token, session, timeout=None)
-        currentMonth = int(datetime.today().month)
-        month = [config['Jan'],config['Feb'],config['Mar'],config['Apr'],config['May'],config['June'],config['July'],config['Aug'],config['Sep'],config['Oct'],config['Nov'],config['Dec']]
-        plex.settings.get('cinemaTrailersPrerollID').set(month[currentMonth - 1])
-        plex.settings.save()
-        print('Pre-roll updated')
+        currentMonth = datetime.today().strftime('%b').lower()
+        if currentMonth in config:
+            plex.settings.get('cinemaTrailersPrerollID').set(config[currentMonth])
+            plex.settings.save()
+            print(f'Pre-roll updated to {config[currentMonth]}')
+        else:
+            print(f'{currentMonth} not found in config. Please update your config. Pre-Roll not updated.')
 
 if __name__ == '__main__':
     main()
+    #getConfig()
