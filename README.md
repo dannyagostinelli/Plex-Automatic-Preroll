@@ -20,6 +20,7 @@ Thanks to [@agrider]( https://github.com/agrider ) for masterlist re-ordering an
 -[PlexAPI](https://github.com/pkkid/python-plexapi)
 
 
+
 ## Installation
 First make sure you have Python installed version 3.7 and above. Next run:
 
