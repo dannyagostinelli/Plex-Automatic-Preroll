@@ -1,16 +1,23 @@
 #!/usr/bin/python
 import subprocess
 import sys
+import logging
+
+logging.basicConfig(format='%(asctime)s | %(levelname)s | %(message)s', filename="Plex-Automatic-Preroll.log", level=logging.INFO)
+
 try:
     from plexapi.server import PlexServer
 
 except:
+    logging.error("PlexAPI Not Installed")
     print('\033[91mERROR:\033[0m PlexAPI is not installed.')
     x = input("Do you want to install it? y/n:")
     if x == 'y':
-        subprocess.check_call([sys.executable, "-m", "pip", "install", 'PlexAPI==4.2.0'])
+        logging.info("Installing PlexAPI")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", 'PlexAPI==4.13.4'])
         from plexapi.server import PlexServer
     elif x == 'n':
+        logging.info("Exiting...")
         sys.exit()
 
 import re
@@ -38,8 +45,10 @@ print('#############################' + '\n')
 
 file = pathlib.Path("config.yml")
 if file.exists():
+    logging.info("config.yml found. Let's get to work.")
     print('Pre-roll updating...')
 else:
+    logging.warning("No config.yml found. Need to set one up. Prompting user.")
     Master = ','
     print('No config file found! Lets set one up!')
     file1 = open("config.yml", "w+")
@@ -49,6 +58,9 @@ else:
     x = input("Enter your plex token: (not sure what that is go here "
               "https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/): ")
     file1.write("  token: " + x + "\n")
+    file1.write("Paths: " + "\n")
+    x = input("Enter the root folder where your PreRolls are stored: (ending with a \)")
+    file1.write("  host_dir: " + x + "\n")
     file1.write("MasterList: "  + "\n")
     x = input("Do you want to enable a Masterlist of Trailers? (Y/N)")
     if x.lower() == 'y':
@@ -64,6 +76,8 @@ else:
         file1.write("# based on if Monthly, Weekly, or Daily are set to be used in the Master List " + "\n")
         file1.write("# otherwise you can populate the path with your own set of trailers" + "\n")
         file1.write("  Path: ")
+        x = input("Enter Masterlist path(s) or folder name:")
+        file1.write(x + "\n")
     else:
         file1.write("  UseMaster: " + "No"  + "\n")
         file1.write("  MasterRandom: " + "No"  + "\n")
@@ -74,50 +88,64 @@ else:
     file1.write("Monthly: "  + "\n")
     x = input("Do you want to enable Monthly Trailers? (Y/N)")
     if x.lower() == 'y':
-        print('Make sure plex can access the path(s) you enter!')
-        x = input("Enter the January trailer path(s):" + "\n")
-        res = re.split(',|;', x)
-        file1.write("  Jan: " + x)
-        x = input("Enter the February trailer path(s):" + "\n")
-        res = res + re.split(',|;', x)
-        file1.write("  Feb: " + x)
-        x = input("Enter the March trailer path(s):" + "\n")
-        res = res + re.split(',|;', x)
-        file1.write("  Mar: " + x)
-        x = input("Enter the April trailer path(s):" + "\n")
-        res = res + re.split(',|;', x)
-        file1.write("  Apr: " + x)
-        x = input("Enter the May trailer path(s):" + "\n")
-        res = res + re.split(',|;', x)
-        file1.write("  May: " + x)
-        x = input("Enter the June trailer path(s):" + "\n")
-        res = res + re.split(',|;', x)
-        file1.write("  June: " + x)
-        x = input("Enter the July trailer path(s):" + "\n")
-        res = res + re.split(',|;', x)
-        file1.write("  July: " + x)
-        x = input("Enter the August trailer path(s):" + "\n")
-        res = res + re.split(',|;', x)
-        file1.write("  Aug: " + x)
-        x = input("Enter the September trailer path(s):" + "\n")
-        res = res + re.split(',|;', x)
-        file1.write("  Sept: " + x)
-        x = input("Enter the October trailer path(s):" + "\n")
-        res = res + re.split(',|;', x)
-        file1.write("  Oct: " + x)
-        x = input("Enter the November trailer path(s):" + "\n")
-        res = res + re.split(',|;', x)
-        file1.write("  Nov: " + x)
-        x = input("Enter the December trailer path(s):" + "\n")
-        res = res + re.split(',|;', x)
-        file1.write("  Dec: " + x)
+        print('Make sure plex can access the path(s) or folders you enter!')
+        res = []
+        x = input("Enter the January trailer path(s) or folder name:" + "\n")
+        if len(x) > 0:
+            res = res + re.split(',|;', x)
+        file1.write("  Jan: " + x  + "\n")
+        x = input("Enter the February trailer path(s) or folder name:" + "\n")
+        if len(x) > 0:
+            res = res + re.split(',|;', x)
+        file1.write("  Feb: " + x  + "\n")
+        x = input("Enter the March trailer path(s) or folder name:" + "\n")
+        if len(x) > 0:
+            res = res + re.split(',|;', x)
+        file1.write("  Mar: " + x  + "\n")
+        x = input("Enter the April trailer path(s) or folder name:" + "\n")
+        if len(x) > 0:
+            res = res + re.split(',|;', x)
+        file1.write("  Apr: " + x  + "\n")
+        x = input("Enter the May trailer path(s) or folder name:" + "\n")
+        if len(x) > 0:
+            res = res + re.split(',|;', x)
+        file1.write("  May: " + x  + "\n")
+        x = input("Enter the June trailer path(s) or folder name:" + "\n")
+        if len(x) > 0:
+            res = res + re.split(',|;', x)
+        file1.write("  June: " + x  + "\n")
+        x = input("Enter the July trailer path(s) or folder name:" + "\n")
+        if len(x) > 0:
+            res = res + re.split(',|;', x)
+        file1.write("  July: " + x  + "\n")
+        x = input("Enter the August trailer path(s) or folder name:" + "\n")
+        if len(x) > 0:
+            res = res + re.split(',|;', x)
+        file1.write("  Aug: " + x  + "\n")
+        x = input("Enter the September trailer path(s) or folder name:" + "\n")
+        if len(x) > 0:
+            res = res + re.split(',|;', x)
+        file1.write("  Sept: " + x  + "\n")
+        x = input("Enter the October trailer path(s) or folder name:" + "\n")
+        if len(x) > 0:
+            res = res + re.split(',|;', x)
+        file1.write("  Oct: " + x  + "\n")
+        x = input("Enter the November trailer path(s) or folder name:" + "\n")
+        if len(x) > 0:
+            res = res + re.split(',|;', x)
+        file1.write("  Nov: " + x  + "\n")
+        x = input("Enter the December trailer path(s) or folder name:" + "\n")
+        if len(x) > 0:
+            res = res + re.split(',|;', x)
+        file1.write("  Dec: " + x  + "\n")
         x = input("Do you want to use the Monthly list in the Master list? (Y/N)")
         if x.lower() == 'y':
             file1.write("  MasterList: Yes" + "\n")
+            listToStr = Master.join([str(elem) for elem in res])
+            file1.write("  MasterListValue: " + listToStr)
         else:
             file1.write("  MasterList: No" + "\n")
-        listToStr = Master.join([str(elem) for elem in res])
-        file1.write("  MasterListValue: " + listToStr)
+            file1.write("  MasterListValue: " + "\n")
         file1.write("  UseMonthly: Yes" + "\n")
     else:
         file1.write("  Jan: " + "\n")
@@ -151,7 +179,7 @@ else:
         day = int(input('Enter a day'))
         date1 = datetime.date(year, month, day + "\n")
         file1.write("  EndDate: " + date1)
-        x = input("Enter the trailer path(s):" + "\n")
+        x = input("Enter the trailer path(s) or folder name:" + "\n")
         file1.write("  Path: " + x)
         x = input("Do you want to use the Weekly list in the Master list? (Y/N)")
         if x.lower() == 'y':
@@ -181,7 +209,7 @@ else:
         day = int(input('Enter a day'))
         date1 = datetime.date(year, month, day)
         file1.write("  EndDate: " + date1 + "\n")
-        x = input("Enter the trailer path(s):")
+        x = input("Enter the trailer path(s) or folder name:")
         file1.write("  Path: " + x + "\n")
         x = input("Do you want to use the Daily list in the Master list? (Y/N)")
         if x.lower() == 'y':
@@ -199,7 +227,7 @@ else:
     x = input("Do you want to enable Misc (Random with one static trailer) Trailers? (Y/N)")
     if x.lower() == 'y':
         print('Make sure plex can access the path you enter!')
-        x = input("Enter the trailer path(s):")
+        x = input("Enter the trailer path(s) or folder name:")
         file1.write("  Path: " + x + "\n")
         x = input("Enter the static trailer path:")
         file1.write("  StaticTrailer: " + x + "\n")
@@ -212,21 +240,36 @@ else:
         file1.write("  StaticTrailer: " + "\n")
         file1.write("  TrailerListLength: " + "\n")
         file1.write("  UseMisc: No" + "\n")
+    logging.info("config.yml created!")
     print('config file (config.yml) created')
     file1.close()
 
 def getArguments():
-    name = 'Automated-Plex-Preroll-Trailers'
-    version = '1.1.0'
+    name = 'Automated-Pl                                                                                                                   ex-Preroll-Trailers'
+    version = '1.2.0'
     parser = ArgumentParser(description='{}: Set monthly trailers for Plex'.format(name))
     parser.add_argument("-v", "--version", action='version', version='{} {}'.format(name, version), help="show the version number and exit")
     args = parser.parse_args()
 
+#Automatically generate preroll based on a list of files in a folder
+def generatePreRoll(HostDirectory, PreRollPath):
+    types = ['.mp4', '.avi', '.mkv', '.mov']
+    PreRollFiles = ''
+    if any(type in PreRollPath for type in types):
+        return PreRollPath
+    else:
+        PreRollPath = os.path.join(HostDirectory,PreRollPath,'')
+        for type in types:
+            for file in os.listdir(PreRollPath):
+                if file.endswith(type):
+                    PreRollFiles+=os.path.join(PreRollPath, file)+';'
+        return PreRollFiles
 
 def main():
     sort = ','
     x = datetime.date.today()
     res = "null"
+    logging.info("Retreiving config from file config.yml")
     #Open config
     with open('config.yml', 'r') as file:
         doc = yaml.load(file, Loader=yaml.SafeLoader)
@@ -242,6 +285,9 @@ def main():
         MasterlistToStr = ','.join([str(elem) for elem in res])
     if doc["MasterList"]["Path"] is not None:
         MasterlistToStr = doc["MasterList"]["Path"]
+    if doc["Paths"]["host_dir"] is not None:
+        host_dir = doc["Paths"]["host_dir"]
+    logging.info("Config loaded")
 
     # Arguments
     arguments = getArguments()
@@ -278,9 +324,15 @@ def main():
             else:
                 print("Error: No video paths configured after applying videos matching today's date and master if enabled!")
                 raise Exception("No video paths configured after applying videos matching today's date and master if enabled!")
+        prerolls = generatePreRoll(host_dir, prerolls)
+        logging.debug("Preroll configured to: " + prerolls)
         plex.settings.get('cinemaTrailersPrerollID').set(prerolls)    
         plex.settings.save()
         print('Pre-roll updated')
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        logging.error(e)
+        print(e)
