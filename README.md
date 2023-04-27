@@ -1,4 +1,11 @@
 # Plex-Automatic-Preroll
+
+All credits goes to **TheHumanRobot**
+## Docker version
+
+Latest Docker version is here: https://hub.docker.com/r/thehumanrobot/rollarr/
+**Please Note:** The docker is unmaintained at this time
+
 ## Dev branch
 This branch should be stable but you have been warned!
 
