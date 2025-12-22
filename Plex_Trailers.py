@@ -14,7 +14,7 @@ except:
     x = input("Do you want to install it? y/n:")
     if x == 'y':
         logging.info("Installing PlexAPI")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", 'PlexAPI==4.13.4'])
+        subprocess.check_call([sys.executable, "-m", "pip", "install", 'PlexAPI==4.17.2'])
         from plexapi.server import PlexServer
     elif x == 'n':
         logging.info("Exiting...")

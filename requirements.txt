@@ -1,9 +1,7 @@
-MarkupSafe==1.1.1
-PlexAPI==4.13.4
-python-dateutil==2.8.1
-PyYAML==5.3.1
-bs4
-lxml
-requests>=2.4.2
-ruamel.yaml
-urllib3==1.26.2
+﻿certifi==2025.11.12
+charset-normalizer==3.4.4
+idna==3.11
+PlexAPI==4.17.2
+PyYAML==6.0.3
+requests==2.32.5
+urllib3==2.6.2
